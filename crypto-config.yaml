@@ -1,16 +1,8 @@
 
 
 OrdererOrgs:
-  - Name: org1
-    Domain: org1.maybe.com
-    EnableNodeOUs: false
-    Template:
-      Count: 1
-      SANS:
-        - localhost
-
-  - Name: org2
-    Domain: org2.maybe.com
+  - Name: orderer
+    Domain: orderer.maybe.com
     EnableNodeOUs: false
     Template:
       Count: 1
@@ -19,8 +11,8 @@ OrdererOrgs:
 
 
 PeerOrgs:
-  - Name: org3
-    Domain: org3.maybe.com
+  - Name: org1
+    Domain: org1.maybe.com
     EnableNodeOUs: false
     Template:
       Count: 1
@@ -29,8 +21,8 @@ PeerOrgs:
     Users:
       Count: 1
 
-  - Name: org4
-    Domain: org4.maybe.com
+  - Name: org2
+    Domain: org2.maybe.com
     EnableNodeOUs: false
     Template:
       Count: 1

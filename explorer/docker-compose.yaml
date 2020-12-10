@@ -1,0 +1,57 @@
+version: '2.1'
+
+volumes:
+  uu_pgdata:
+  uu_walletstore:
+
+networks:
+  uunet:
+    external:
+      name: fabrictestnetwork_test
+
+services:
+  uuHyperledgerExplorerDB:
+    image: hyperledger/explorer-db:${IMAGE_TAG}
+    container_name: uu-hyperledger-explorer-db
+    hostname: uuExplorerDB
+    environment:
+      - DATABASE_DATABASE=fabricexplorer
+      - DATABASE_USERNAME=hppoc
+      - DATABASE_PASSWORD=password
+    healthcheck:
+      test: "pg_isready -h localhost -p 5432 -q -U postgres"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    volumes:
+      - uu_pgdata:/var/lib/postgresql/data
+    networks:
+      - uunet
+
+  uuHyperledgerExplorer:
+    image: hyperledger/explorer:${IMAGE_TAG}
+    container_name: uuExplorer
+    hostname: uuExplorer
+    environment:
+      - DATABASE_HOST=uuExplorerDB
+      - DATABASE_DATABASE=fabricexplorer
+      - DATABASE_USERNAME=hppoc
+      - DATABASE_PASSWD=password
+      - LOG_LEVEL_APP=debug
+      - LOG_LEVEL_DB=debug
+      - LOG_LEVEL_CONSOLE=info
+      - LOG_CONSOLE_STDOUT=true
+      - DISCOVERY_AS_LOCALHOST=false
+    volumes:
+      - ./config.json:/opt/explorer/app/platform/fabric/config.json
+      - ./connection-profile:/opt/explorer/app/platform/fabric/connection-profile
+      - ../organizations:/tmp/crypto
+      - uu_walletstore:/opt/explorer/wallet
+    ports:
+      - 8085:8080
+    depends_on:
+      uuHyperledgerExplorerDB:
+        condition: service_healthy
+    networks:
+      - uunet
+

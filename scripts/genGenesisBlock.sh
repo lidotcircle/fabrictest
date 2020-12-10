@@ -1,6 +1,6 @@
 #!/bin/bash
 
-configtxgen -profile TwoOrdererTwoPeerGenesis \
+configtxgen -profile TwoPeerGenesis \
             -channelID system-channel \
             -outputBlock ./system-genesis-block/genesis.block
 

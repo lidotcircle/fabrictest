@@ -1,0 +1,9 @@
+{
+	"network-configs": {
+		"uu-test": {
+			"name": "let me see see",
+			"profile": "./connection-profile/first-network.json"
+		}
+	},
+	"license": "Apache-2.0"
+}
