@@ -1,10 +1,10 @@
 # Gensis Block config 
 
 Organizations:
-    - &OrdererOrg
-        Name: OrdererOrg
-        ID: OrdererMSP
-        MSPDir: ./organizations/ordererOrganizations/orderer.maybe.com/msp
+    - &Orderer1Org
+        Name: Orderer1Org
+        ID: Orderer1MSP
+        MSPDir: ./organizations/ordererOrganizations/orderer1.maybe.com/msp
 
         Policies:
             Readers:
@@ -18,7 +18,28 @@ Organizations:
                 Rule: "OR('OrdererMSP.admin')"
 
         OrdererEndpoints:
-            - orderer.maybe.com:7050
+            - orderer0.orderer1.maybe.com:7050
+            - orderer0.orderer2.maybe.com:7050
+
+    - &Orderer2Org
+        Name: Orderer2Org
+        ID: Orderer2MSP
+        MSPDir: ./organizations/ordererOrganizations/orderer2.maybe.com/msp
+
+        Policies:
+            Readers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Writers:
+                Type: Signature
+                Rule: "OR('OrdererMSP.member')"
+            Admins:
+                Type: Signature
+                Rule: "OR('OrdererMSP.admin')"
+
+        OrdererEndpoints:
+            - orderer0.orderer1.maybe.com:7050
+            - orderer0.orderer2.maybe.com:7050
 
     - &Org1
         Name: Org1MSP
@@ -40,7 +61,7 @@ Organizations:
                 Rule: "OR('Org1MSP.peer')"
 
         AnchorPeers:
-            - Host: org1.maybe.com
+            - Host: peerx.org1.maybe.com
               Port: 7050
 
     - &Org2
@@ -63,7 +84,7 @@ Organizations:
                 Rule: "OR('Org2MSP.peer')"
 
         AnchorPeers:
-            - Host: org2.maybe.com
+            - Host: peer0.org2.maybe.com
               Port: 7050
 
 
@@ -103,14 +124,19 @@ Application: &ApplicationDefaults
 Orderer: &OrdererDefaults
     OrdererType: etcdraft
     Addresses:
-        - orderer.maybe.com:7050
+        - orderer0.orderer1.maybe.com:7050
+        - orderer0.orderer2.maybe.com:7050
 
     EtcdRaft:
         Consenters:
-        - Host: orderer.maybe.com
+        - Host: orderer0.orderer1.maybe.com
           Port: 7050
-          ClientTLSCert: ./organizations/ordererOrganizations/orderer.maybe.com/orderers/orderer0.orderer.maybe.com/tls/server.crt
-          ServerTLSCert: ./organizations/ordererOrganizations/orderer.maybe.com/orderers/orderer0.orderer.maybe.com/tls/server.crt
+          ClientTLSCert: ./organizations/ordererOrganizations/orderer1.maybe.com/orderers/orderer0.orderer1.maybe.com/tls/server.crt
+          ServerTLSCert: ./organizations/ordererOrganizations/orderer1.maybe.com/orderers/orderer0.orderer1.maybe.com/tls/server.crt
+        - Host: orderer0.orderer2.maybe.com
+          Port: 7050
+          ClientTLSCert: ./organizations/ordererOrganizations/orderer2.maybe.com/orderers/orderer0.orderer2.maybe.com/tls/server.crt
+          ServerTLSCert: ./organizations/ordererOrganizations/orderer2.maybe.com/orderers/orderer0.orderer2.maybe.com/tls/server.crt
 
     BatchTimeout: 2s
     BatchSize:
@@ -160,7 +186,8 @@ Profiles:
         Orderer:
             <<: *OrdererDefaults
             Organizations:
-                - *OrdererOrg
+                - *Orderer1Org
+                - *Orderer2Org
             Capabilities:
                 <<: *OrdererCapabilities
         Consortiums:
