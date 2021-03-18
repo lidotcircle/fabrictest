@@ -9,10 +9,10 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Orderer1MSP.member')"
+                Rule: "OR('Orderer1MSP.member', 'Org1MSP.peer', 'Org2MSP.peer')"
             Writers:
                 Type: Signature
-                Rule: "OR('Orderer1MSP.member')"
+                Rule: "OR('Orderer1MSP.member', 'Org1MSP.peer', 'Org2MSP.peer')"
             Admins:
                 Type: Signature
                 Rule: "OR('Orderer1MSP.admin')"
@@ -29,10 +29,10 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Orderer2MSP.member')"
+                Rule: "OR('Orderer2MSP.member', 'Org1MSP.peer', 'Org2MSP.peer')"
             Writers:
                 Type: Signature
-                Rule: "OR('Orderer2MSP.member')"
+                Rule: "OR('Orderer2MSP.member', 'Org1MSP.peer', 'Org2MSP.peer')"
             Admins:
                 Type: Signature
                 Rule: "OR('Orderer2MSP.admin')"
@@ -126,17 +126,22 @@ Orderer: &OrdererDefaults
     Addresses:
         - orderer0.orderer1.maybe.com:7050
         - orderer0.orderer2.maybe.com:7050
-
     EtcdRaft:
+        Options:
+            TickInterval: "500ms"
+            ElectionTick: 10
+            HeartbeatTick: 1
+            MaxInflightBlocks: 5
+            SnapShotIntervalSize: 16777216
         Consenters:
-        - Host: orderer0.orderer1.maybe.com
-          Port: 7050
-          ClientTLSCert: ./organizations/ordererOrganizations/orderer1.maybe.com/orderers/orderer0.orderer1.maybe.com/tls/server.crt
-          ServerTLSCert: ./organizations/ordererOrganizations/orderer1.maybe.com/orderers/orderer0.orderer1.maybe.com/tls/server.crt
-        - Host: orderer0.orderer2.maybe.com
-          Port: 7050
-          ClientTLSCert: ./organizations/ordererOrganizations/orderer2.maybe.com/orderers/orderer0.orderer2.maybe.com/tls/server.crt
-          ServerTLSCert: ./organizations/ordererOrganizations/orderer2.maybe.com/orderers/orderer0.orderer2.maybe.com/tls/server.crt
+            - Host: orderer0.orderer1.maybe.com
+              Port: 7050
+              ClientTLSCert: ./organizations/ordererOrganizations/orderer1.maybe.com/orderers/orderer0.orderer1.maybe.com/tls/server.crt
+              ServerTLSCert: ./organizations/ordererOrganizations/orderer1.maybe.com/orderers/orderer0.orderer1.maybe.com/tls/server.crt
+            - Host: orderer0.orderer2.maybe.com
+              Port: 7050
+              ClientTLSCert: ./organizations/ordererOrganizations/orderer2.maybe.com/orderers/orderer0.orderer2.maybe.com/tls/server.crt
+              ServerTLSCert: ./organizations/ordererOrganizations/orderer2.maybe.com/orderers/orderer0.orderer2.maybe.com/tls/server.crt
 
     BatchTimeout: 2s
     BatchSize:
@@ -145,6 +150,8 @@ Orderer: &OrdererDefaults
         PreferredMaxBytes: 512 KB
 
     Organizations:
+        - *Orderer1Org
+        - *Orderer2Org
 
     Policies:
         Readers:
@@ -185,9 +192,6 @@ Profiles:
         <<: *ChannelDefaults
         Orderer:
             <<: *OrdererDefaults
-            Organizations:
-                - *Orderer1Org
-                - *Orderer2Org
             Capabilities:
                 <<: *OrdererCapabilities
         Consortiums:
