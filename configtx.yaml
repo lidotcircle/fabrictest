@@ -9,13 +9,13 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('OrdererMSP.member')"
+                Rule: "OR('Orderer1MSP.member')"
             Writers:
                 Type: Signature
-                Rule: "OR('OrdererMSP.member')"
+                Rule: "OR('Orderer1MSP.member')"
             Admins:
                 Type: Signature
-                Rule: "OR('OrdererMSP.admin')"
+                Rule: "OR('Orderer1MSP.admin')"
 
         OrdererEndpoints:
             - orderer0.orderer1.maybe.com:7050
@@ -29,13 +29,13 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('OrdererMSP.member')"
+                Rule: "OR('Orderer2MSP.member')"
             Writers:
                 Type: Signature
-                Rule: "OR('OrdererMSP.member')"
+                Rule: "OR('Orderer2MSP.member')"
             Admins:
                 Type: Signature
-                Rule: "OR('OrdererMSP.admin')"
+                Rule: "OR('Orderer2MSP.admin')"
 
         OrdererEndpoints:
             - orderer0.orderer1.maybe.com:7050
@@ -181,7 +181,7 @@ Channel: &ChannelDefaults
 
 
 Profiles:
-    TwoPeerGenesis:
+    TwoPeersGenesis:
         <<: *ChannelDefaults
         Orderer:
             <<: *OrdererDefaults
@@ -195,4 +195,14 @@ Profiles:
                 Organizations:
                     - *Org1
                     - *Org2
+    TwoPeersChannel:
+        Consortium: SampleConsortium
+        <<: *ChannelDefaults
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+                - *Org1
+                - *Org2
+            Capabilities:
+                <<: *ApplicationCapabilities
 
