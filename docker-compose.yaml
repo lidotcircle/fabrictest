@@ -88,8 +88,8 @@ services:
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variabes
       - CORE_PEER_ID=peerx.org1.maybe.com
-      - CORE_PEER_ADDRESS=peerx.org1.maybe.com:7050
-      - CORE_PEER_LISTENADDRESS=0.0.0.0:7050
+      - CORE_PEER_ADDRESS=peerx.org1.maybe.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peerx.org1.maybe.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peerx.org1.maybe.com:7051
       - CORE_PEER_CHAINCODEADDRESS=peerx.org1.maybe.com:7052
@@ -102,7 +102,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
-      - 8052:7050
+      - 8052:7051
     networks:
       - ProductionNet
 
@@ -125,8 +125,8 @@ services:
       - CORE_PEER_TLS_ROOTCERT_FILE=/etc/hyperledger/fabric/tls/ca.crt
       # Peer specific variabes
       - CORE_PEER_ID=peer0.org2.maybe.com
-      - CORE_PEER_ADDRESS=peer0.org2.maybe.com:7050
-      - CORE_PEER_LISTENADDRESS=0.0.0.0:7050
+      - CORE_PEER_ADDRESS=peer0.org2.maybe.com:7051
+      - CORE_PEER_LISTENADDRESS=0.0.0.0:7051
       - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.org2.maybe.com:7051
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.maybe.com:7051
       - CORE_PEER_CHAINCODEADDRESS=peer0.org2.maybe.com:7052
@@ -139,7 +139,7 @@ services:
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: peer node start
     ports:
-      - 8053:7050
+      - 8053:7051
     networks:
       - ProductionNet
 
