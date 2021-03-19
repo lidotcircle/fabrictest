@@ -9,14 +9,6 @@ OrdererOrgs:
       SANS:
         - orderer1.com
 
-  - Name: orderer2
-    Domain: orderer2.maybe.com
-    EnableNodeOUs: true
-    Template:
-      Count: 1
-      SANS:
-        - orderer2.com
-
 PeerOrgs:
   - Name: org1
     Domain: org1.maybe.com

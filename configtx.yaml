@@ -9,37 +9,16 @@ Organizations:
         Policies:
             Readers:
                 Type: Signature
-                Rule: "OR('Orderer1MSP.member', 'Org1MSP.peer', 'Org2MSP.peer')"
+                Rule: "OR('Orderer1MSP.member')"
             Writers:
                 Type: Signature
-                Rule: "OR('Orderer1MSP.member', 'Org1MSP.peer', 'Org2MSP.peer')"
+                Rule: "OR('Orderer1MSP.member')"
             Admins:
                 Type: Signature
                 Rule: "OR('Orderer1MSP.admin')"
 
         OrdererEndpoints:
             - orderer0.orderer1.maybe.com:7050
-            - orderer0.orderer2.maybe.com:7050
-
-    - &Orderer2Org
-        Name: Orderer2Org
-        ID: Orderer2MSP
-        MSPDir: ./organizations/ordererOrganizations/orderer2.maybe.com/msp
-
-        Policies:
-            Readers:
-                Type: Signature
-                Rule: "OR('Orderer2MSP.member', 'Org1MSP.peer', 'Org2MSP.peer')"
-            Writers:
-                Type: Signature
-                Rule: "OR('Orderer2MSP.member', 'Org1MSP.peer', 'Org2MSP.peer')"
-            Admins:
-                Type: Signature
-                Rule: "OR('Orderer2MSP.admin')"
-
-        OrdererEndpoints:
-            - orderer0.orderer1.maybe.com:7050
-            - orderer0.orderer2.maybe.com:7050
 
     - &Org1
         Name: Org1MSP
@@ -98,12 +77,11 @@ Capabilities:
 
 
 Application: &ApplicationDefaults
-    Organizations:
-
+# TODO
     Policies:
         Readers:
-            Type: ImplicitMeta
-            Rule: "ANY Readers"
+            Type: Signature
+            Rule: "OR('Org1MSP.member', 'Org2MSP.member', 'Org1MSP.peer', 'Org2MSP.peer')"
         Writers:
             Type: ImplicitMeta
             Rule: "ANY Writers"
@@ -125,7 +103,6 @@ Orderer: &OrdererDefaults
     OrdererType: etcdraft
     Addresses:
         - orderer0.orderer1.maybe.com:7050
-        - orderer0.orderer2.maybe.com:7050
     EtcdRaft:
         Options:
             TickInterval: "500ms"
@@ -138,10 +115,6 @@ Orderer: &OrdererDefaults
               Port: 7050
               ClientTLSCert: ./organizations/ordererOrganizations/orderer1.maybe.com/orderers/orderer0.orderer1.maybe.com/tls/server.crt
               ServerTLSCert: ./organizations/ordererOrganizations/orderer1.maybe.com/orderers/orderer0.orderer1.maybe.com/tls/server.crt
-            - Host: orderer0.orderer2.maybe.com
-              Port: 7050
-              ClientTLSCert: ./organizations/ordererOrganizations/orderer2.maybe.com/orderers/orderer0.orderer2.maybe.com/tls/server.crt
-              ServerTLSCert: ./organizations/ordererOrganizations/orderer2.maybe.com/orderers/orderer0.orderer2.maybe.com/tls/server.crt
 
     BatchTimeout: 2s
     BatchSize:
@@ -151,12 +124,12 @@ Orderer: &OrdererDefaults
 
     Organizations:
         - *Orderer1Org
-        - *Orderer2Org
 
+# TODO ImplicitMeta Rule Fail
     Policies:
         Readers:
-            Type: ImplicitMeta
-            Rule: "ANY Readers"
+            Type: Signature
+            Rule: "OR('Org1MSP.member', 'Org2MSP.member', 'Org1MSP.peer', 'Org2MSP.peer')"
         Writers:
             Type: ImplicitMeta
             Rule: "ANY Writers"
