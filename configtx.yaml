@@ -19,7 +19,6 @@ Organizations:
 
         OrdererEndpoints:
             - orderer0.orderer1.maybe.com:7050
-            - orderer0.orderer2.maybe.com:7050
 
     - &Orderer2Org
         Name: Orderer2Org
@@ -38,7 +37,6 @@ Organizations:
                 Rule: "OR('Orderer2MSP.admin')"
 
         OrdererEndpoints:
-            - orderer0.orderer1.maybe.com:7050
             - orderer0.orderer2.maybe.com:7050
 
     - &Org1
@@ -97,13 +95,14 @@ Capabilities:
         V2_0: true
 
 
+# Application Channel
 Application: &ApplicationDefaults
     Organizations:
 
     Policies:
         Readers:
-            Type: ImplicitMeta
-            Rule: "ANY Readers"
+            Type: Signature
+            Rule: "OR('Org1MSP.peer', 'Org2MSP.peer', 'Org1MSP.member', 'Org2MSP.member')"
         Writers:
             Type: ImplicitMeta
             Rule: "ANY Writers"
@@ -155,8 +154,8 @@ Orderer: &OrdererDefaults
 
     Policies:
         Readers:
-            Type: ImplicitMeta
-            Rule: "ANY Readers"
+            Type: Signature
+            Rule: "OR('Org1MSP.peer', 'Org2MSP.peer', 'Org1MSP.member', 'Org2MSP.member')"
         Writers:
             Type: ImplicitMeta
             Rule: "ANY Writers"
