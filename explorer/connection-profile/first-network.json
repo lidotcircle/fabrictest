@@ -32,7 +32,21 @@
 					}
 				}
 			}
-		}
+		},
+        "channel1": {
+			"peers": {
+				"peerx.org1.maybe.com": {}
+			},
+			"connection": {
+				"timeout": {
+					"peer": {
+						"endorser": "6000",
+						"eventHub": "6000",
+						"eventReg": "6000"
+					}
+				}
+			}
+        }
 	},
 	"organizations": {
 		"Org1MSP": {
@@ -51,7 +65,7 @@
 			"tlsCACerts": {
 				"path": "/tmp/crypto/peerOrganizations/org1.maybe.com/peers/peerx.org1.maybe.com/tls/ca.crt"
 			},
-			"url": "grpcs://peerx.org1.maybe.com:7050"
+			"url": "grpcs://peerx.org1.maybe.com:7051"
 		}
 	}
 }
