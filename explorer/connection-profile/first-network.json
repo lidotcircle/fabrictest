@@ -19,32 +19,9 @@
 		}
 	},
 	"channels": {
-		"system-channel": {
-			"peers": {
-				"peerx.org1.maybe.com": {}
-			},
-			"connection": {
-				"timeout": {
-					"peer": {
-						"endorser": "6000",
-						"eventHub": "6000",
-						"eventReg": "6000"
-					}
-				}
-			}
-		},
         "channel1": {
 			"peers": {
 				"peerx.org1.maybe.com": {}
-			},
-			"connection": {
-				"timeout": {
-					"peer": {
-						"endorser": "6000",
-						"eventHub": "6000",
-						"eventReg": "6000"
-					}
-				}
 			}
         }
 	},
