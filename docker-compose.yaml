@@ -131,7 +131,7 @@ services:
       - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.org2.maybe.com:7051
       - CORE_PEER_CHAINCODEADDRESS=peer0.org2.maybe.com:7052
       - CORE_PEER_CHAINCODELISTENADDRESS=0.0.0.0:7052
-      - CORE_PEER_LOCALMSPID=org2MSP
+      - CORE_PEER_LOCALMSPID=Org2MSP
     volumes:
         - /var/run/:/host/var/run/
         - ./organizations/peerOrganizations/org2.maybe.com/peers/peer0.org2.maybe.com/msp:/etc/hyperledger/fabric/msp

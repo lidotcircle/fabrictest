@@ -4,6 +4,7 @@ setPeerEnvs() {
     local ORG="$1"
     local PEER="$2"
     local PORT="$3"
+    echo -e "INFO: USING Peer in $ORG.$PEER with local address localhost:$PORT"
 
     if [ ! $# -eq 3 ] || [ -z "${ORG}" ] || [ -z "${PEER}" ] || [ -z "${PORT}" ]; then
         echo "ERROR: require ORG and PEER be set" >&2

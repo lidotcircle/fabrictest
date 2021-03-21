@@ -60,7 +60,7 @@ Organizations:
 
         AnchorPeers:
             - Host: peerx.org1.maybe.com
-              Port: 7050
+              Port: 7051
 
     - &Org2
         Name: Org2MSP
@@ -83,7 +83,7 @@ Organizations:
 
         AnchorPeers:
             - Host: peer0.org2.maybe.com
-              Port: 7050
+              Port: 7051
 
 
 Capabilities:
