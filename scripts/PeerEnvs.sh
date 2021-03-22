@@ -19,3 +19,14 @@ setPeerEnvs() {
     export CORE_PEER_ADDRESS=${PEER}.${ORG}.maybe.com:${PORT}
 }
 
+checkCmdExecution() {
+    if [ ! $# -eq 1 ] || [ ! $1 -eq 0 ]; then
+        echo "ERROR: cmd execution exit with $1"
+        exit $1
+    fi
+}
+
+
+OrdererPeer1Cert=${PWD}/organizations/ordererOrganizations/orderer1.maybe.com/orderers/orderer0.orderer1.maybe.com/msp/tlscacerts/tlsca.orderer1.maybe.com-cert.pem
+OrdererPeer2Cert=${PWD}/organizations/ordererOrganizations/orderer2.maybe.com/orderers/orderer0.orderer2.maybe.com/msp/tlscacerts/tlsca.orderer2.maybe.com-cert.pem
+

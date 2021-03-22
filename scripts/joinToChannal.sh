@@ -22,5 +22,5 @@ peer channel join \
     -o orderer0.orderer1.maybe.com:8051 \
     --ordererTLSHostnameOverride orderer0.orderer1.maybe.com \
     --tls \
-    --cafile ${PWD}/organizations/ordererOrganizations/orderer1.maybe.com/orderers/orderer0.orderer1.maybe.com/msp/tlscacerts/tlsca.orderer1.maybe.com-cert.pem
+    --cafile $OrdererPeer1Cert
 

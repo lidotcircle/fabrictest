@@ -1,4 +1,9 @@
 organizations/*
 system-genesis-block/*
 channel-artifacts/*
+ccpackage/*
+
+**/node_modules
+**/package-lock.json
+**/dist
 

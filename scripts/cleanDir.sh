@@ -6,4 +6,5 @@ rm -r ./channel-artifacts
 
 docker-compose down
 docker-compose rm
+docker volume prune -f
 
