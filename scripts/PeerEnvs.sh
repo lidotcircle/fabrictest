@@ -20,8 +20,11 @@ setPeerEnvs() {
 }
 
 checkCmdExecution() {
-    if [ ! $# -eq 1 ] || [ ! $1 -eq 0 ]; then
+    if [ ! $# -ge 1 ] || [ ! $1 -eq 0 ]; then
         echo "ERROR: cmd execution exit with $1"
+        if [ -n "$2" ]; then
+            echo "ERROR: $2"
+        fi
         exit $1
     fi
 }

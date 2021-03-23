@@ -20,13 +20,13 @@ OrdererOrgs:
 PeerOrgs:
   - Name: org1
     Domain: org1.maybe.com
-    EnableNodeOUs: false
+    EnableNodeOUs: true
     Specs:
         - Hostname: peerx
 
   - Name: org2
     Domain: org2.maybe.com
-    EnableNodeOUs: false
+    EnableNodeOUs: true
     Template:
       Count: 1
       SANS:
