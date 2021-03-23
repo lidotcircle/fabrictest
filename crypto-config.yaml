@@ -7,7 +7,7 @@ OrdererOrgs:
     Template:
       Count: 1
       SANS:
-        - orderer1.com
+        - localhost # for port mapping address
 
   - Name: orderer2
     Domain: orderer2.maybe.com
@@ -15,22 +15,24 @@ OrdererOrgs:
     Template:
       Count: 1
       SANS:
-        - orderer2.com
+        - localhost
 
 PeerOrgs:
   - Name: org1
     Domain: org1.maybe.com
-    EnableNodeOUs: false
+    EnableNodeOUs: true
     Specs:
         - Hostname: peerx
+          SANS:
+              - localhost
 
   - Name: org2
     Domain: org2.maybe.com
-    EnableNodeOUs: false
+    EnableNodeOUs: true
     Template:
       Count: 1
       SANS:
-        - peer2.com
+        - localhost
     Users:
       Count: 1
 

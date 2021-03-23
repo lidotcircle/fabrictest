@@ -19,7 +19,7 @@ checkCmdExecution $?
 
 
 peer channel update \
-    -o orderer0.orderer1.maybe.com:8051 \
+    -o localhost:8051 \
     --ordererTLSHostnameOverride orderer0.orderer1.maybe.com \
     -c $CHANNEL \
     -f ./channel-artifacts/${ORG}_${CHANNEL}_anchors.tx \

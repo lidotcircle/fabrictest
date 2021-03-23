@@ -24,6 +24,6 @@ $PWD/scripts/setAnchorPeer.sh org1 peerx 8052
 checkCmdExecution $?
 $PWD/scripts/setAnchorPeer.sh org2 peer0 8053
 checkCmdExecution $?
-$PWD/scripts/deployChaincode.sh
+$PWD/scripts/deployChaincode.sh basic-go
 checkCmdExecution $?
 

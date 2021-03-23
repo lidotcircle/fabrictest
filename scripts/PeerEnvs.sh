@@ -16,12 +16,16 @@ setPeerEnvs() {
     export CORE_PEER_LOCALMSPID="${ORG^}MSP"
     export CORE_PEER_TLS_ROOTCERT_FILE=${PWD}/organizations/peerOrganizations/${ORG}.maybe.com/peers/${PEER}.${ORG}.maybe.com/tls/ca.crt
     export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/${ORG}.maybe.com/users/Admin@${ORG}.maybe.com/msp
-    export CORE_PEER_ADDRESS=${PEER}.${ORG}.maybe.com:${PORT}
+#    export CORE_PEER_ADDRESS=${PEER}.${ORG}.maybe.com:${PORT}
+    export CORE_PEER_ADDRESS=localhost:${PORT}
 }
 
 checkCmdExecution() {
-    if [ ! $# -eq 1 ] || [ ! $1 -eq 0 ]; then
+    if [ ! $# -ge 1 ] || [ ! $1 -eq 0 ]; then
         echo "ERROR: cmd execution exit with $1"
+        if [ -n "$2" ]; then
+            echo "ERROR: $2"
+        fi
         exit $1
     fi
 }

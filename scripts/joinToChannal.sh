@@ -19,7 +19,7 @@ setPeerEnvs $ORG $PEER $PORT
 
 peer channel join \
     -b ./channel-artifacts/${CHANNEL}.block \
-    -o orderer0.orderer1.maybe.com:8051 \
+    -o localhost:8051 \
     --ordererTLSHostnameOverride orderer0.orderer1.maybe.com \
     --tls \
     --cafile $OrdererPeer1Cert

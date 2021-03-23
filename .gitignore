@@ -4,6 +4,7 @@ channel-artifacts/*
 ccpackage/*
 
 **/node_modules
+**/chaincode/**/vendor
 **/package-lock.json
 **/dist
 
