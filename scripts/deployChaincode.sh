@@ -6,7 +6,6 @@ source $(dirname ${BASH_SOURCE[0]})/utils.sh
 
 NAME=basic
 CHANNEL=channel1
-CCVERSION=1.0
 if [ $# -ge 1 ]; then
     NAME=$1
 fi
@@ -19,8 +18,9 @@ if [ $# -gt 2 ]; then
     error "require 0 to 2 command line arguments, but gets $#"
     exit 2
 fi
-LABEL=${NAME}_${CCVERSION}
 LANGUAGE=
+SEQUENCE=
+CCVERSION=
 
 if [ -e $PWD/chaincode/$NAME/package.json ]; then
     LANGUAGE=node
@@ -30,6 +30,19 @@ else
     error "invalid chaincode"
     exit 2
 fi
+
+setPeerEnvs org1 peerx 8052
+SEQUENCE=$(\
+    peer lifecycle chaincode querycommitted -C $CHANNEL |\
+    grep -se "Name: $NAME," |\
+    sed -e "s/^.*Sequence: \([[:digit:]]\+\),.*$/\1/g")
+[ -n "$SEQUENCE" ] && SEQUENCE=$[${SEQUENCE}+1] || SEQUENCE=1
+
+if [ -z "$CCVERSION" ]; then
+    CCVERSION=${SEQUENCE}.0
+fi
+LABEL=${NAME}_${CCVERSION}
+info "installing chaincode $LABEL into $CHANNEL with sequence $SEQUENCE"
 
 
 packChaincode() {
@@ -90,7 +103,7 @@ approveByEnvs() {
         --name $NAME \
         --version $CCVERSION \
         --package-id ${PACKAGE_ID} \
-        --sequence 1 \
+        --sequence ${SEQUENCE} \
 
     checkCmdExecution $? 'approveformyorg fail'
 
@@ -98,7 +111,7 @@ approveByEnvs() {
         --channelID $CHANNEL \
         --name $NAME \
         --version $CCVERSION \
-        --sequence 1 \
+        --sequence ${SEQUENCE} \
         --output json
     checkCmdExecution $? 'check commit readiness fail'
 }
@@ -125,7 +138,7 @@ commitChaincode() {
         --channelID $CHANNEL \
         --name $NAME \
         --version $CCVERSION \
-        --sequence 1 \
+        --sequence ${SEQUENCE} \
         --peerAddresses localhost:8052 \
         --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/org1.maybe.com/peers/peerx.org1.maybe.com/tls/ca.crt \
         --peerAddresses localhost:8053 \
