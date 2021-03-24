@@ -15,7 +15,17 @@ if [ $# -gt 2 ]; then
     echo "ERROR: require 0 to 2 command line arguments, but gets $#"
     exit 2
 fi
-LABEL=cc_${NAME}_${CCVERSION}
+LABEL=${NAME}_${CCVERSION}
+LANGUAGE=
+
+if [ -e $PWD/chaincode/$NAME/package.json ]; then
+    LANGUAGE=node
+elif [ -e $PWD/chaincode/$NAME/go.mod ]; then
+    LANGUAGE=golang
+else
+    echo "invalid chaincode"
+    exit 2
+fi
 
 source $(dirname ${BASH_SOURCE[0]})/PeerEnvs.sh
 
@@ -25,7 +35,7 @@ packChaincode() {
         checkCmdExecution $?
     fi
 
-    if [ -e $PWD/chaincode/$NAME/package.json ]; then
+    if [ "$LANGUAGE" == "node" ]; then
         pushd $PWD/chaincode/$NAME && tsc && popd
         checkCmdExecution $?
     fi
@@ -38,7 +48,7 @@ packChaincode() {
     peer lifecycle chaincode package \
         $PWD/ccpackage/$NAME.tar.gz \
         --path $PWD/chaincode/$NAME \
-        --lang golang \
+        --lang $LANGUAGE \
         --label $LABEL
     checkCmdExecution $?
 }
@@ -65,7 +75,8 @@ approveByEnvs() {
         exit 2
     fi
 
-    PACKAGE_ID=$1
+    PACKAGE_ID=${LABEL}:$1
+    echo "INFO: approve ${PACKAGE_ID}"
     peer lifecycle chaincode approveformyorg \
         -o localhost:8051 \
         --ordererTLSHostnameOverride orderer0.orderer1.maybe.com \
@@ -74,11 +85,19 @@ approveByEnvs() {
         --channelID $CHANNEL \
         --name $NAME \
         --version $CCVERSION \
-        --package-id ${NAME}_${CCVERSION}:${PACKAGE_ID} \
+        --package-id ${PACKAGE_ID} \
         --sequence 1 \
 #        --signature-policy "AND('Org1MSP.peer', 'Org2MSP.peer')" \
 
     checkCmdExecution $? 'approveformyorg fail'
+
+    peer lifecycle chaincode checkcommitreadiness \
+        --channelID $CHANNEL \
+        --name $NAME \
+        --version $CCVERSION \
+        --sequence 1 \
+        --output json
+    checkCmdExecution $? 'check commit readiness fail'
 }
 
 approveByOrg1() {
@@ -120,14 +139,14 @@ packChaincode
 installChaincodeInOrg1
 installChaincodeInOrg2
 
-PackageId=$(\
+PackageIdHash=$(\
     peer lifecycle chaincode queryinstalled |\
     grep -se '^Package ID:.*$' |\
-    tail -n 1 |\
+    grep -se " ${LABEL}:" |\
     grep -soe '[a-z0-9]\{16,\}')
 
-approveByOrg1 "$PackageId"
-approveByOrg2 "$PackageId"
+approveByOrg1 "$PackageIdHash"
+approveByOrg2 "$PackageIdHash"
 
 commitChaincode
 

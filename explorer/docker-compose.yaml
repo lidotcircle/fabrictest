@@ -7,12 +7,12 @@ volumes:
 networks:
   uunet:
     external:
-      name: fabrictestnetwork_ProductionNet
+      name: fabrictest_maybenet
 
 services:
   explorerdb.fabric.maybe.com:
     image: hyperledger/explorer-db:${IMAGE_TAG}
-    container_name: fabric-explorer-db
+    container_name: uufabric-explorer-db
     hostname: uuExplorerDB
     environment:
       - DATABASE_DATABASE=fabricexplorer
@@ -30,7 +30,7 @@ services:
 
   explorer.fabric.maybe.com:
     image: hyperledger/explorer:${IMAGE_TAG}
-    container_name: fabric-explorer
+    container_name: uufabric-explorer
     hostname: uuExplorer
     environment:
       - DATABASE_HOST=explorerdb.fabric.maybe.com

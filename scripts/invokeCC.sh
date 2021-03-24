@@ -31,6 +31,6 @@ queryCC() {
 }
 
 
-queryCC
-# invokeCC
+# queryCC
+invokeCC
 

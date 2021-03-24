@@ -1,7 +1,7 @@
 version: '2.1'
 
 networks:
-  ProductionNet:
+  maybenet:
 
 services:
   # Domain name of this container
@@ -35,7 +35,7 @@ services:
     ports:
       - 8051:7050
     networks:
-      - ProductionNet
+      - maybenet
 
   orderer0.orderer2.maybe.com:
     container_name: uuorderer2
@@ -67,7 +67,7 @@ services:
     ports:
       - 8033:7050
     networks:
-      - ProductionNet
+      - maybenet
 
   peerx.org1.maybe.com:
     container_name: peer0org1
@@ -78,7 +78,7 @@ services:
       # the following setting starts chaincode containers on the same
       # bridge network as the peers
       # https://docs.docker.com/compose/networking/
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_test
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_maybenet
       - CORE_VM_DOCKER_ATTACHSTDOUT=true
       - FABRIC_LOGGING_SPEC=INFO
       #- FABRIC_LOGGING_SPEC=DEBUG
@@ -105,7 +105,7 @@ services:
     ports:
       - 8052:7051
     networks:
-      - ProductionNet
+      - maybenet
 
   peer0.org2.maybe.com:
     container_name: peer0org2
@@ -116,7 +116,7 @@ services:
       # the following setting starts chaincode containers on the same
       # bridge network as the peers
       # https://docs.docker.com/compose/networking/
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_test
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_maybenet
       - CORE_VM_DOCKER_ATTACHSTDOUT=true
       - FABRIC_LOGGING_SPEC=INFO
       #- FABRIC_LOGGING_SPEC=DEBUG
@@ -143,5 +143,5 @@ services:
     ports:
       - 8053:7051
     networks:
-      - ProductionNet
+      - maybenet
 
