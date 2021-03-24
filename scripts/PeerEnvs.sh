@@ -1,13 +1,16 @@
 #!/bin/bash
 
+source $(dirname ${BASH_SOURCE[0]})/utils.sh
+
+
 setPeerEnvs() {
     local ORG="$1"
     local PEER="$2"
     local PORT="$3"
-    echo -e "INFO: USING Peer in $ORG.$PEER with local address localhost:$PORT"
+    info "USING Peer in $ORG.$PEER with local address localhost:$PORT"
 
     if [ ! $# -eq 3 ] || [ -z "${ORG}" ] || [ -z "${PEER}" ] || [ -z "${PORT}" ]; then
-        echo "ERROR: require ORG and PEER be set" >&2
+        error "require ORG and PEER be set" >&2
         exit 2
     fi
 
@@ -20,11 +23,12 @@ setPeerEnvs() {
     export CORE_PEER_ADDRESS=localhost:${PORT}
 }
 
+
 checkCmdExecution() {
     if [ ! $# -ge 1 ] || [ ! $1 -eq 0 ]; then
-        echo "ERROR: cmd execution exit with $1"
+        error "cmd execution exit with $1"
         if [ -n "$2" ]; then
-            echo "ERROR: $2"
+            error "$2"
         fi
         exit $1
     fi

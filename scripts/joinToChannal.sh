@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source $(dirname ${BASH_SOURCE[0]})/utils.sh
+
+
 ORG=org1
 PEER=peerx
 PORT=8052
@@ -10,13 +13,14 @@ if [ $# -eq 3 ]; then
     PEER=$2
     PORT=$3
 elif [ ! $# -eq 0 ]; then
-    echo "ERROR: require zero or three command line arguments"
+    error "require zero or three command line arguments"
     exit 1
 fi
 
 source $(dirname ${BASH_SOURCE[0]})/PeerEnvs.sh
 setPeerEnvs $ORG $PEER $PORT
 
+info "join $PEER.$ORG to $CHANNEL"
 peer channel join \
     -b ./channel-artifacts/${CHANNEL}.block \
     -o localhost:8051 \

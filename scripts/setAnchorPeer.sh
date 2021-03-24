@@ -9,15 +9,17 @@ ORGMSP=${ORG^}MSP
 source $(dirname ${BASH_SOURCE[0]})/PeerEnvs.sh
 
 setPeerEnvs $ORG $PEER $PORT
+info "generate crypto stuff for channel ${CHANNEL}"
 configtxgen \
     -profile TwoPeersChannel \
-    --configPath $PWD \
+    --configPath $PWD/config \
     -outputAnchorPeersUpdate ./channel-artifacts/${ORG}_${CHANNEL}_anchors.tx \
     -channelID $CHANNEL \
     -asOrg $ORGMSP
 checkCmdExecution $?
 
 
+info "update channel ${CHANNEL}"
 peer channel update \
     -o localhost:8051 \
     --ordererTLSHostnameOverride orderer0.orderer1.maybe.com \

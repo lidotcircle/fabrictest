@@ -1,6 +1,10 @@
 #!/bin/bash
 
-NAME=c1
+source $(dirname ${BASH_SOURCE[0]})/PeerEnvs.sh
+source $(dirname ${BASH_SOURCE[0]})/utils.sh
+
+
+NAME=basic
 CHANNEL=channel1
 CCVERSION=1.0
 if [ $# -ge 1 ]; then
@@ -12,7 +16,7 @@ if [ $# -ge 2 ]; then
 fi
 
 if [ $# -gt 2 ]; then
-    echo "ERROR: require 0 to 2 command line arguments, but gets $#"
+    error "require 0 to 2 command line arguments, but gets $#"
     exit 2
 fi
 LABEL=${NAME}_${CCVERSION}
@@ -23,11 +27,10 @@ if [ -e $PWD/chaincode/$NAME/package.json ]; then
 elif [ -e $PWD/chaincode/$NAME/go.mod ]; then
     LANGUAGE=golang
 else
-    echo "invalid chaincode"
+    error "invalid chaincode"
     exit 2
 fi
 
-source $(dirname ${BASH_SOURCE[0]})/PeerEnvs.sh
 
 packChaincode() {
     if [ ! -d $PWD/ccpackage ]; then
@@ -41,10 +44,11 @@ packChaincode() {
     fi
 
     if [ ! -d $PWD/chaincode/$NAME ]; then
-        echo "ERROR: can't find chaincode in $PWD/chaincode/$NAME"
+        error "can't find chaincode in $PWD/chaincode/$NAME"
         exit 1
     fi
 
+    info "packaging chaincode $NAME"
     peer lifecycle chaincode package \
         $PWD/ccpackage/$NAME.tar.gz \
         --path $PWD/chaincode/$NAME \
@@ -71,12 +75,12 @@ installChaincodeInOrg2() {
 
 approveByEnvs() {
     if [ ! $# -eq 1 ]; then
-        echo 'ERROR: require one argument'
+        error 'require one argument'
         exit 2
     fi
 
     PACKAGE_ID=${LABEL}:$1
-    echo "INFO: approve ${PACKAGE_ID}"
+    info "approve ${PACKAGE_ID}"
     peer lifecycle chaincode approveformyorg \
         -o localhost:8051 \
         --ordererTLSHostnameOverride orderer0.orderer1.maybe.com \
@@ -87,7 +91,6 @@ approveByEnvs() {
         --version $CCVERSION \
         --package-id ${PACKAGE_ID} \
         --sequence 1 \
-#        --signature-policy "AND('Org1MSP.peer', 'Org2MSP.peer')" \
 
     checkCmdExecution $? 'approveformyorg fail'
 
@@ -113,7 +116,7 @@ approveByOrg2() {
 commitChaincode() {
     setPeerEnvs org1 peerx 8052
 
-    echo "committing chaincode $NAME"
+    info "committing chaincode $NAME in $CHANNEL"
     peer lifecycle chaincode commit \
         -o localhost:8051 \
         --ordererTLSHostnameOverride orderer0.orderer1.maybe.com \
