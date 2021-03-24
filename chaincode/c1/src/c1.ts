@@ -9,12 +9,12 @@ class CC1Data {
 export class CC1 extends Contract {
     private async assertNotExist(ctx: Context, id: string) {
         const data = await ctx.stub.getState(id);
-        if(data != null) {
-            throw new Error(`${id} has exist`);
+        if(data != null && data.length != 0) {
+            throw new Error(`${id} has exist ${data.toString()}`);
         }
     }
 
-    public async initLedger(ctx: Context) {
+    public async InitLedger(ctx: Context) {
         const dts: CC1Data[] = [
             {no: 1},
             {no: 2},
@@ -43,7 +43,7 @@ export class CC1 extends Contract {
         return ans;
     }
 
-    public async setDate(ctx: Context, id: string, data: CC1Data) {
+    public async setData(ctx: Context, id: string, data: CC1Data) {
         await this.assertNotExist(ctx, id);
         await ctx.stub.putState(id, Buffer.from(JSON.stringify(data)));
     }

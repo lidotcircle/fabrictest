@@ -1,18 +1,27 @@
 {
-  "name": "test-chaincode-c1",
-  "version": "1.0.0",
-  "description": "chaincode test",
-  "main": "dist/src/index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "lidotcircle",
-  "license": "ISC",
-  "dependencies": {
-    "fabric-contract-api": "^2.2.1",
-    "long": "^4.0.0"
-  },
-  "devDependencies": {
-    "@types/node": "^14.14.35"
-  }
+    "name": "test-chaincode-c1",
+    "version": "1.0.0",
+    "description": "experimental chaincode",
+    "main": "dist/src/index.js",
+    "engines": {
+        "node": ">=12",
+        "npm": ">=5"
+    },
+    "scripts": {
+        "test": "echo 'not specified'",
+        "start": "fabric-chaincode-node start",
+        "build": "tsc",
+        "build:watch": "tsc -w",
+        "prepublishOnly": "npm run build"
+    },
+    "author": "lidotcircle",
+    "license": "ISC",
+    "dependencies": {
+        "fabric-contract-api": "^2.2.1",
+        "fabric-shim": "^2.2.1",
+        "long": "^4.0.0"
+    },
+    "devDependencies": {
+        "@types/node": "^14.14.35"
+    }
 }
